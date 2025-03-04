@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: factorial-deb-package
-          path: ./factorial_1.0-1_$(dpkg --print-architecture).deb  # Убедитесь, что файл существует
+          path: ./factorial_1.0-1_amd64.deb  # Убедитесь, что файл существует
 
   deploy:
     name: Deploy
@@ -100,7 +100,7 @@ jobs:
 
       - name: Install .deb package
         run: |
-          sudo dpkg -i factorial_1.0-1_$(dpkg --print-architecture).deb
+          sudo dpkg -i factorial_1.0-1_amd64.deb
           sudo apt-get install -f  # Исправление возможных зависимостей
         env:
           DEBIAN_FRONTEND: noninteractive
