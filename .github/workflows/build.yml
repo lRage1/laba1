@@ -1,4 +1,4 @@
-name: CI/CD for Factorial App
+name: CI/CD Factorial
 
 on:
   push:
@@ -23,11 +23,14 @@ jobs:
       - name: Build project
         run: make all
 
+      - name: List files (debug)
+        run: ls -la
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: factorial-binary
-          path: factorial
+          name: first-binary
+          path: ./first  # Указываем путь к бинарному файлу
 
   test:
     name: Test
@@ -41,50 +44,66 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: factorial-binary
+          name: first-binary
+
+      - name: List files (debug)
+        run: ls -la
+
+      - name: Move binary to working directory
+        run: mv first-binary/first . && chmod +x first
 
       - name: Run tests
         run: |
-          chmod +x tests/test.sh
-          ./tests/test.sh
+          chmod +x tests/test.sh  # Делаем тесты исполнимыми
+          ./tests/test.sh  # Запуск тестов
 
   package:
     name: Package
     runs-on: ubuntu-latest
-    needs: test  # Ждёт завершения test
+    needs: test  # Ждёт завершения тестов
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: factorial-binary
-
-      - name: Install packaging tools
-        run: sudo apt-get install -y dpkg-dev debhelper
+      - name: Install dependencies for packaging
+        run: sudo apt-get update && sudo apt-get install -y build-essential dpkg-dev
 
       - name: Build .deb package
         run: make deb
 
-      - name: Upload .deb artifact
+      - name: List files (debug)
+        run: ls -la
+
+      - name: Upload .deb package
         uses: actions/upload-artifact@v4
         with:
-          name: factorial-package
-          path: factorial_1.0-1_amd64.deb
+          name: factorial-deb-package
+          path: ./factorial_1.0-1_$(dpkg --print-architecture).deb  # Убедитесь, что файл существует
 
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: package  # Ждёт завершения package
+    needs: package  # Ждёт завершения packaging
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Download .deb package
         uses: actions/download-artifact@v4
         with:
-          name: factorial-package
+          name: factorial-deb-package
 
-      - name: Deploy package
+      - name: List files (debug)
+        run: ls -la
+
+      - name: Install .deb package
         run: |
-          echo "Uploading package to repository..."
+          sudo dpkg -i factorial_1.0-1_$(dpkg --print-architecture).deb
+          sudo apt-get install -f  # Исправление возможных зависимостей
+        env:
+          DEBIAN_FRONTEND: noninteractive
+
+      - name: Confirm installation
+        run: factorial --version  
