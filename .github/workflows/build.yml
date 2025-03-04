@@ -106,4 +106,4 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Confirm installation
-        run: first 2  
+        run: echo "2" | first 
