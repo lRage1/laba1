@@ -15,7 +15,7 @@ run_test() {
     echo "[FAIL] $description"
     echo "Expected: '$expected'"
     echo "Got: '$output'"
-    exit 1
+    return 1
   fi
 }
 
