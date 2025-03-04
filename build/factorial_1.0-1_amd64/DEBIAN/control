@@ -1,0 +1,6 @@
+Package: factorial
+Version: 1.0-1
+Depends: libc6, libstdc++6
+Architecture: amd64
+Maintainer: Fisrt Capybara Team
+Description: Factorial calculator
