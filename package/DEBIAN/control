@@ -1,0 +1,10 @@
+Package: first
+Version: 1.0
+Section: unknown
+Priority: optional
+Depends: libc6, libstdc++6
+Architecture: amd64
+Essential: no
+Installed-Size: 20
+Maintainer: firstcapybara.bar <firstcapybara@capybaraBar.com>
+Description: Find Factorial 
