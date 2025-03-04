@@ -50,7 +50,7 @@ jobs:
         run: ls -la
 
       - name: Move binary to working directory
-        run: chmod +x first-binary/first
+        run: chmod +x first
 
       - name: Run tests
         run: |
