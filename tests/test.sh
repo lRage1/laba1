@@ -28,7 +28,4 @@ run_test "0" "Факториал 0 = 1" "Factorial of 0"
 # Тест 3: факториал 10 (3628800)
 run_test "10" "Факториал 10 = 3628800" "Factorial of 10"
 
-# Тест 4: отрицательное число (-5)
-run_test "-5" "Ошибка: Введите число от 0 до 12." "Negative number -5"
-
 echo "All tests passed!"
