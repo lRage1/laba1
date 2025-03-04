@@ -106,4 +106,4 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Confirm installation
-        run: first --version  
+        run: first 2  
