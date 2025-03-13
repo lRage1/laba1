@@ -94,16 +94,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: factorial-deb-package
+          path: buid
 
       - name: List files (debug)
-        run: ls -la
+        run: ls -la build
 
-      - name: Install .deb package
+      - name: Install Docker
         run: |
-          sudo dpkg -i factorial_1.0-1_amd64.deb
-          sudo apt-get install -f  # Исправление возможных зависимостей
-        env:
-          DEBIAN_FRONTEND: noninteractive
-
-      - name: Confirm installation
-        run: echo "2" | first 
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          
+      - name: Build Docker image
+      	run: docker build -t factorial-app .
+      	
+      - name: Run Docker container
+      	run: docker run --rm factorial-app
