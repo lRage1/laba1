@@ -108,4 +108,4 @@ jobs:
         run: docker build -t factorial-app .
       	
       - name: Run Docker container
-      	run: docker run --rm factorial-app
+        run: docker run --rm factorial-app
